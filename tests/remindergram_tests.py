@@ -3,7 +3,7 @@ from remindergram import source
 from remindergram import photo
 from remindergram import recommendation
 
-test_attrs = {
+bear_photo_attrs = {
     'title': 'My test',
     'author': 'Evan Solomon',
     'link': 'http://evansolomon.me',
@@ -11,34 +11,47 @@ test_attrs = {
 }
 
 bears = {
-    'little': photo.Photo('http://placebear.com/50/100', test_attrs),
-    'medium': photo.Photo('http://placebear.com/200/200', test_attrs),
-    'big': photo.Photo('http://placebear.com/1000/2000', test_attrs)
+    'little': photo.Photo('http://placebear.com/50/100', bear_photo_attrs),
+    'medium': photo.Photo('http://placebear.com/200/200', bear_photo_attrs),
+    'big': photo.Photo('http://placebear.com/1000/2000', bear_photo_attrs)
 }
+
+chexstagram = source.Instagram('chexee')
+
+wp_plain = {
+    'root': source.WordPress('http://evansolomon.me'),
+    'tag': source.WordPress('http://evansolomon.me/tag/foo')
+}
+
+wp_feed = {
+    'root': source.WordPress('http://evansolomon.me/feed'),
+    'tag': source.WordPress('http://evansolomon.me/tag/foo/feed')
+}
+
+rss = source.RSS('tests/evansolomon.xml')
 
 
 def test_wp_plain_urls():
-    assert_equals('http://evansolomon.me/feed', source.WordPress('http://evansolomon.me').url)
-    assert_equals('http://evansolomon.me/tag/foo/feed', source.WordPress('http://evansolomon.me/tag/foo').url)
+    assert_equals('http://evansolomon.me/feed', wp_plain.get('root').url)
+    assert_equals('http://evansolomon.me/tag/foo/feed', wp_plain.get('tag').url)
 
 
 def test_wp_feed_urls():
-    assert_equals('http://evansolomon.me/feed', source.WordPress('http://evansolomon.me/feed').url)
-    assert_equals('http://evansolomon.me/tag/foo/feed', source.WordPress('http://evansolomon.me/tag/foo/feed').url)
+    assert_equals('http://evansolomon.me/feed', wp_feed.get('root').url)
+    assert_equals('http://evansolomon.me/tag/foo/feed', wp_feed.get('tag').url)
 
 
 def test_instagram_urls():
-    assert_equals('http://widget.stagram.com/rss/n/foo/', source.Instagram('foo').url)
+    assert_equals('http://widget.stagram.com/rss/n/chexee/', chexstagram.url)
 
 
 def test_wp_feed_length():
-    blog = source.WordPress('http://evansolomon.me')
+    blog = wp_plain.get('root')
     assert_equals(10, len(blog.get_entries()))
 
 
 def test_rss_feed_length():
-    blog = source.RSS('tests/evansolomon.xml')
-    assert_equals(10, len(blog.get_entries()))
+    assert_equals(10, len(rss.get_entries()))
 
 
 def test_img_in_html():
@@ -66,18 +79,15 @@ def test_img_validate_custom_size():
 
 
 def test_recommendation_unlimited():
-    blog = source.RSS('tests/evansolomon.xml')
-    recs = recommendation.Recommendation(blog.photos, {'validate_days': 0})
-    assert_equals(len(blog.get_entries()), len(recs.get()))
+    recs = recommendation.Recommendation(rss.photos, {'validate_days': 0})
+    assert_equals(len(rss.get_entries()), len(recs.get()))
 
 
 def test_recommendation_limited():
-    blog = source.RSS('tests/evansolomon.xml')
-    recs = recommendation.Recommendation(blog.photos, {'validate_days': 1})
+    recs = recommendation.Recommendation(rss.photos, {'validate_days': 1})
     assert_equals(0, len(recs.get()))
 
 
 def test_recommendation_instagram():
-    chexstagram = source.Instagram('chexee')
     recs = recommendation.Recommendation(chexstagram.photos, {'validate_days': 0, 'validate_size': 300})
     assert_equals(len(chexstagram.get_entries()), len(recs.get()))
