@@ -48,7 +48,6 @@ class Photo(object):
     def get_size(self):
         image = Image.open(self.file)
         return image.size if hasattr(image, 'size') else (0, 0)
-        return self
 
     def get_from_url(self, url):
         self.url = url
