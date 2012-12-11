@@ -65,6 +65,8 @@ def test_img_in_html():
 
 def test_img_size():
     assert_equals((50, 100), bears['little'].size)
+    assert_equals((200, 200), bears['medium'].size)
+    assert_equals((1000, 2000), bears['big'].size)
 
 
 def test_img_validate():
