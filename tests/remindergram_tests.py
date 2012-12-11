@@ -68,16 +68,16 @@ def test_img_validate_custom_size():
 def test_recommendation_unlimited():
     blog = source.RSS('tests/evansolomon.xml')
     recs = recommendation.Recommendation(blog.photos, {'validate_days': -1})
-    assert_equals(len(blog.get_entries()), len(recs.recommendations))
+    assert_equals(len(blog.get_entries()), len(recs.get()))
 
 
 def test_recommendation_limited():
     blog = source.RSS('tests/evansolomon.xml')
     recs = recommendation.Recommendation(blog.photos, {'validate_days': 1})
-    assert_equals(0, len(recs.recommendations))
+    assert_equals(0, len(recs.get()))
 
 
 def test_recommendation_instagram():
     chexstagram = source.Instagram('chexee')
     recs = recommendation.Recommendation(chexstagram.photos, {'validate_days': -1, 'validate_size': 300})
-    assert_equals(len(chexstagram.get_entries()), len(recs.recommendations))
+    assert_equals(len(chexstagram.get_entries()), len(recs.get()))

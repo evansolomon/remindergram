@@ -44,3 +44,6 @@ class Recommendation(object):
     def get_timestamp_from_date(self, published):
         struct = datetime.datetime.strptime(published, '%a, %d %b %Y %H:%M:%S +0000').timetuple()
         return time.mktime(struct)
+
+    def get(self):
+        return self.recommendations
