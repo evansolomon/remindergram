@@ -40,7 +40,7 @@ class Photo(object):
         return self
 
     def validate(self, minimum=False):
-        if not all(False != self.attrs.get(field, False) for field in self.attr_fields):
+        if any(False == self.attrs.get(field, False) for field in self.attr_fields):
             return False
 
         minimum = minimum or self.defaults.get('minimum_size')
