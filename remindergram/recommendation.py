@@ -12,7 +12,7 @@ class Recommendation(object):
         self.recommend()
 
     def parse_args(self, args):
-        self.validation = {
+        self.photo_tests = {
             'days': args.get('days', 7),
             'size': args.get('size', None)
         }
@@ -26,7 +26,7 @@ class Recommendation(object):
         return self
 
     def validate(self, photo):
-        return Photo_Validation(photo, self.validation).valid
+        return Photo_Validation(photo, self.photo_tests).valid
 
     def get(self):
         return self.recommendations
