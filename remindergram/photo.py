@@ -15,7 +15,7 @@ def find_in_html(html):
 
 
 class Photo(object):
-    def __init__(self, file, attrs, args={}):
+    def __init__(self, file, attrs):
         self.file = self.get_file(file)
         self.attrs = attrs
         self.attr_fields = ('title', 'author', 'link', 'timestamp')
