@@ -18,7 +18,7 @@ class Photo(object):
     def __init__(self, file, attrs, args={}):
         self.file = self.get_file(file)
         self.attrs = attrs
-        self.attr_fields = ('title', 'author', 'link', 'date')
+        self.attr_fields = ('title', 'author', 'link', 'timestamp')
         self.set_defaults()
         self.parse()
 

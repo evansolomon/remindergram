@@ -5,6 +5,8 @@ Get remote data sources and parse their contents
 import feedparser
 import re
 import photo
+import datetime
+import time
 
 
 class RSS(object):
@@ -34,24 +36,36 @@ class RSS(object):
 
 class RSS_Entry(object):
     def __init__(self, entry):
-        self.parse(entry)
+        self.entry = entry
+        self.parse()
 
-    def parse(self, entry):
+    def parse(self):
+        entry = self.entry
         self.data = {
             'title': entry.get('title', ''),
-            'content': self.get_content(entry),
+            'content': self.get_content(),
             'author': entry.get('author', ''),
             'link': entry.get('link', ''),
-            'date': entry.get('published', '')
+            'timestamp': self.get_publish_timestamp()
         }
 
-    def get_content(self, entry):
+    def get_content(self):
+        entry = self.entry
         if 'content' in entry:
             return entry.get('content')[0].get('value')
         elif 'summary' in entry:
             return entry.get('summary')
         else:
             return ''
+
+    def get_publish_timestamp(self):
+        format = "%a, %d %b %Y %H:%M:%S"
+        published = self.trim_date(self.entry.get('published', ''))
+        struct = datetime.datetime.strptime(published, format).timetuple()
+        return time.mktime(struct)
+
+    def trim_date(self, date):
+        return re.sub(' \+[0-9]{4}$', '', date)
 
 
 class WordPress(RSS):

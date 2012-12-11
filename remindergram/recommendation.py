@@ -3,7 +3,6 @@ Recommend photos to use for postagrams
 """
 
 import time
-import datetime
 
 
 class Recommendation(object):
@@ -32,18 +31,12 @@ class Recommendation(object):
         if self.validation.get('days') <= 0:
             validated['date'] = True
         else:
-            published = photo.data.get('date')
             threshold = 60 * 60 * 24 * self.validation.get('days')
-            timestamp = self.get_timestamp_from_date(published)
-            validated['date'] = timestamp > int(time.time()) - threshold
+            validated['date'] = photo.data.get('timestamp') > int(time.time()) - threshold
 
         validated['photo'] = photo.validate(self.validation.get('size'))
 
         return all(False != validated.get(attr) for attr in validated)
-
-    def get_timestamp_from_date(self, published):
-        struct = datetime.datetime.strptime(published, '%a, %d %b %Y %H:%M:%S +0000').timetuple()
-        return time.mktime(struct)
 
     def get(self):
         return self.recommendations

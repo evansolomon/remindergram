@@ -7,7 +7,7 @@ test_attrs = {
     'title': 'My test',
     'author': 'Evan Solomon',
     'link': 'http://evansolomon.me',
-    'date': 'Tue, 11 Dec 2012 01:43:30 +0000'
+    'timestamp': 1355219010
 }
 
 bears = {
