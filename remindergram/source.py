@@ -23,9 +23,9 @@ class RSS(object):
         self.photos = []
         for entry in self.get_entries():
             rss_entry = RSS_Entry(entry)
-            files = photo.find_in_html(rss_entry.data.get('content'))
-            for file in files:
-                _photo = photo.Photo(file, rss_entry.data)
+            images = photo.find_in_html(rss_entry.data.get('content'))
+            for image in images:
+                _photo = photo.Photo(image, rss_entry.data)
                 self.photos.append(_photo)
 
         return self
