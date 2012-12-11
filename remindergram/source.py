@@ -60,7 +60,7 @@ class RSS_Entry(object):
         format = "%a, %d %b %Y %H:%M:%S"
         published = self.trim_date(self.entry.get('published', ''))
         struct = datetime.datetime.strptime(published, format).timetuple()
-        return time.mktime(struct)
+        return int(time.mktime(struct))
 
     def trim_date(self, date):
         return re.sub(' \+[0-9]{4}$', '', date)
