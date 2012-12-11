@@ -23,7 +23,7 @@ class RSS(object):
         self.photos = []
         for entry in self.get_entries():
             rss_entry = RSS_Entry(entry)
-            images = photo.find_in_html(rss_entry.data.get('content'))
+            images = photo.find_in_html(rss_entry.get_content())
             for image in images:
                 _photo = photo.Photo(image, rss_entry.data)
                 self.photos.append(_photo)
@@ -43,7 +43,6 @@ class RSS_Entry(object):
         entry = self.entry
         self.data = {
             'title': entry.get('title', ''),
-            'content': self.get_content(),
             'author': entry.get('author', ''),
             'link': entry.get('link', ''),
             'timestamp': self.get_publish_timestamp()
