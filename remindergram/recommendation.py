@@ -26,17 +26,39 @@ class Recommendation(object):
         return self
 
     def validate(self, photo):
-        validated = {}
-
-        if self.validation.get('days') <= 0:
-            validated['date'] = True
-        else:
-            threshold = 60 * 60 * 24 * self.validation.get('days')
-            validated['date'] = photo.data.get('timestamp') > int(time.time()) - threshold
-
-        validated['photo'] = photo.validate(self.validation.get('size'))
-
-        return all(False != validated.get(attr) for attr in validated)
+        return Photo_Validation(photo, self.validation).valid
 
     def get(self):
         return self.recommendations
+
+
+class Photo_Validation(object):
+    def __init__(self, photo, tests):
+        self.photo = photo
+        self.tests = tests
+        self.validate()
+
+    def validate(self):
+        results = []
+        for (test, param) in self.tests.items():
+            results.append(self.run(test, param))
+
+        self.valid = not any(False == result for result in results)
+        return self
+
+    def run(self, test, param):
+        callback = 'test_%s' % test
+        return getattr(self, callback)(param) if self.has_test(callback) else None
+
+    def has_test(self, test):
+        return hasattr(self, test) and callable(getattr(self, test))
+
+    def test_days(self, days):
+        if days <= 0:
+            return True
+        else:
+            threshold = 60 * 60 * 24 * days
+            return self.photo.data.get('timestamp') > int(time.time()) - threshold
+
+    def test_size(self, size):
+        return self.photo.validate(size)
