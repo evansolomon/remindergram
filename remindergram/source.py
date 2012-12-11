@@ -21,12 +21,11 @@ class RSS(object):
 
     def parse_entries(self):
         self.photos = []
-        for entry in self.get_entries():
-            rss_entry = RSS_Entry(entry)
-            images = photo.find_in_html(rss_entry.get_content())
-            for image in images:
-                _photo = photo.Photo(image, rss_entry.data)
-                self.photos.append(_photo)
+        rss_entries = [RSS_Entry(entry) for entry in self.get_entries()]
+        for entry in rss_entries:
+            images = photo.find_in_html(entry.get_content())
+            photos = [photo.Photo(image, entry.data) for image in images]
+            self.photos.extend(photos)
 
         return self
 
