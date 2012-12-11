@@ -13,8 +13,8 @@ class Recommendation(object):
 
     def parse_args(self, args):
         self.validation = {
-            'days': args.get('validate_days', 7),
-            'size': args.get('validate_size', None)
+            'days': args.get('days', 7),
+            'size': args.get('size', None)
         }
         return self
 
