@@ -57,10 +57,11 @@ def test_rss_feed_length():
 def test_img_in_html():
     html = """
     <p>Here is HTML with an <img src="http://placebear.com/50/50"> image in it</p>
-    </div>Here is another <img src='http://placebear.com/500/700' /></div>
+    <div>Here is another <img src='http://placebear.com/500/700' /></div>
+    <span>Here is another <img alt="bear!" src='http://placebear.com/5/5' /></span>
     """
     found_bears = photo.find_in_html(html)
-    assert_equals(2, len(found_bears))
+    assert_equals(3, len(found_bears))
 
 
 def test_img_size():
