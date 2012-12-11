@@ -92,5 +92,5 @@ def test_recommendation_limited():
 
 
 def test_recommendation_instagram():
-    recs = recommendation.Recommendation(chexstagram.photos, {'days': 0, 'size': 300})
+    recs = recommendation.Recommendation(chexstagram.photos, {'days': 0, 'size': 100})
     assert_equals(len(chexstagram.get_entries()), len(recs.get()))
