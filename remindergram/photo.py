@@ -16,11 +16,11 @@ def find_in_html(html):
 
 class Photo(object):
     def __init__(self, file, attrs):
-        self.file = self.get_file(file)
-        self.attrs = attrs
-        self.attr_fields = ('title', 'author', 'link', 'timestamp')
         self.set_defaults()
-        self.parse()
+        self.fields = ('title', 'author', 'link', 'timestamp')
+        self.file = self.get_file(file)
+        self.data = self.filter_attrs(attrs)
+        self.size = self.get_size()
 
     def get_file(self, file):
         if urlparse(file).netloc:
@@ -34,21 +34,19 @@ class Photo(object):
         }
         return self
 
-    def parse(self):
-        self.parse_size()
-        self.data = {field: self.attrs.get(field) for field in self.attr_fields}
-        return self
+    def filter_attrs(self, attrs):
+        return {field: attrs.get(field) for field in self.fields}
 
     def validate(self, minimum=False):
-        if any(False == self.attrs.get(field, False) for field in self.attr_fields):
+        if any(False == self.data.get(field, False) for field in self.fields):
             return False
 
         minimum = minimum or self.defaults.get('minimum_size')
         return all(dimension >= minimum for dimension in self.size)
 
-    def parse_size(self):
+    def get_size(self):
         image = Image.open(self.file)
-        self.size = image.size if hasattr(image, 'size') else (0, 0)
+        return image.size if hasattr(image, 'size') else (0, 0)
         return self
 
     def get_from_url(self, url):
