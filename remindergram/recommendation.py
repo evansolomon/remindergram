@@ -36,15 +36,14 @@ class Photo_Validation(object):
     def __init__(self, photo, tests):
         self.photo = photo
         self.tests = tests
-        self.validate()
+        self.valid = self.validate()
 
     def validate(self):
         results = []
         for (test, param) in self.tests.items():
             results.append(self.run(test, param))
 
-        self.valid = not any(False == result for result in results)
-        return self
+        return not any(False == result for result in results)
 
     def run(self, test, param):
         callback = 'test_%s' % test
