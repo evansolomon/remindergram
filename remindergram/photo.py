@@ -16,6 +16,7 @@ def find_in_html(html):
 
 class Photo(object):
     def __init__(self, file, attrs):
+        self.url = None
         self.set_defaults()
         self.fields = ('title', 'author', 'link', 'timestamp')
         self.file = self.get_file(file)
@@ -50,5 +51,6 @@ class Photo(object):
         return self
 
     def get_from_url(self, url):
+        self.url = url
         image = urllib2.urlopen(url).read()
         return StringIO(image)
