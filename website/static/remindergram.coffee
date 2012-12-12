@@ -3,6 +3,7 @@ $ ->
 	$form       = $ 'form.remindergram'
 	$service    = $ '#service'
 	$identifier = $ '#identifier'
+	$result     = $ '.result'
 
 	# Service/identify map
 	services =
@@ -32,8 +33,11 @@ $ ->
 		event.preventDefault()
 
 		data = parseFormData $form
-		$.post $form.attr( 'action' ), data, ( data ) ->
-			console.log data
+		$.post $form.attr( 'action' ), data, ( response ) ->
+			if response.error
+				renderError response
+			else
+				renderSucces response
 
 	parseFormData = ( $form ) ->
 		return _.reduce $form.serializeArray(), ( data, pair ) ->
@@ -41,3 +45,13 @@ $ ->
 			return data
 		, {}
 
+	renderSucces = (response) ->
+		compiled = _.template "<% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %>", {photos: response}
+		renderResult compiled
+
+	renderError = ( response ) ->
+		compiled = _.template "Oops, there was an error: <%= error %>", response
+		renderResult compiled
+
+	renderResult = ( html ) ->
+		$result.empty().append html

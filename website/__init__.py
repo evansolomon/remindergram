@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, Response
 import json
 from flask.ext.bootstrap import Bootstrap
 from remindergram import source, recommendation
@@ -28,5 +28,8 @@ def get_photos():
         return jsonify({'error': 'No photos'})
 
     recs = recommendation.Recommendation(s.photos, {'days': 20, 'size': 100})
-    photos = [{'title': rec.data.get('title'), 'url': rec.url} for rec in recs.get()]
-    return json.dumps(photos)
+    photos = [rec.url for rec in recs.get()]
+    if not len(photos):
+        return jsonify({'error': 'No photos'})
+
+    return Response(json.dumps(photos), mimetype='application/json')

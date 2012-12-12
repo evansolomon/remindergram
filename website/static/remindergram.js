@@ -2,10 +2,11 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $service, destroyService, doService, parseFormData, services, setIdentifer;
+    var $form, $identifier, $result, $service, destroyService, doService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer;
     $form = $('form.remindergram');
     $service = $('#service');
     $identifier = $('#identifier');
+    $result = $('.result');
     services = {
       'Instagram': 'Username',
       'WordPress': 'Blog address',
@@ -33,15 +34,34 @@
       var data;
       event.preventDefault();
       data = parseFormData($form);
-      return $.post($form.attr('action'), data, function(data) {
-        return console.log(data);
+      return $.post($form.attr('action'), data, function(response) {
+        if (response.error) {
+          return renderError(response);
+        } else {
+          return renderSucces(response);
+        }
       });
     });
-    return parseFormData = function($form) {
+    parseFormData = function($form) {
       return _.reduce($form.serializeArray(), function(data, pair) {
         data[pair.name] = pair.value;
         return data;
       }, {});
+    };
+    renderSucces = function(response) {
+      var compiled;
+      compiled = _.template("<% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %>", {
+        photos: response
+      });
+      return renderResult(compiled);
+    };
+    renderError = function(response) {
+      var compiled;
+      compiled = _.template("Oops, there was an error: <%= error %>", response);
+      return renderResult(compiled);
+    };
+    return renderResult = function(html) {
+      return $result.empty().append(html);
     };
   });
 
