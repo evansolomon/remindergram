@@ -11,7 +11,7 @@ config = {
     'author_email': 'evan@evanalyze.com',
     'version': '1.0',
     'scripts': [],
-    'install_requires': ['feedparser', 'nose', 'BeautifulSoup', 'PIL'],
+    'install_requires': ['feedparser', 'nose', 'BeautifulSoup', 'PIL', 'Flask', 'flask-bootstrap'],
     'packages': ['remindergram'],
     'name': 'remindergram',
     'license': 'MIT License'
