@@ -33,7 +33,9 @@ $ ->
 		event.preventDefault()
 
 		data = parseFormData $form
+		timer = waitingPanda()
 		$.post $form.attr( 'action' ), data, ( response ) ->
+			clearTimeout timer
 			if response.error
 				renderError response
 			else
@@ -55,3 +57,11 @@ $ ->
 
 	renderResult = ( html ) ->
 		$result.empty().append html
+
+	waitingPanda = ->
+		compiled = _.template "<img src='<%= src %>'>",
+			src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
+
+		setTimeout ->
+			renderResult compiled,
+		, 500

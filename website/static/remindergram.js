@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $result, $service, destroyService, doService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer;
+    var $form, $identifier, $result, $service, destroyService, doService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
     $form = $('form.remindergram');
     $service = $('#service');
     $identifier = $('#identifier');
@@ -31,10 +31,12 @@
       return $identifier.attr('placeholder', placeholder);
     };
     $form.on('submit', function(event) {
-      var data;
+      var data, timer;
       event.preventDefault();
       data = parseFormData($form);
+      timer = waitingPanda();
       return $.post($form.attr('action'), data, function(response) {
+        clearTimeout(timer);
         if (response.error) {
           return renderError(response);
         } else {
@@ -60,8 +62,17 @@
       compiled = _.template("Oops, there was an error: <%= error %>", response);
       return renderResult(compiled);
     };
-    return renderResult = function(html) {
+    renderResult = function(html) {
       return $result.empty().append(html);
+    };
+    return waitingPanda = function() {
+      var compiled;
+      compiled = _.template("<img src='<%= src %>'>", {
+        src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
+      });
+      return setTimeout(function() {
+        return renderResult(compiled);
+      }, 500);
     };
   });
 
