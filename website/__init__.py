@@ -13,7 +13,7 @@ app.config['BOOTSTRAP_FONTAWESOME'] = True
 
 @app.route('/')
 def index():
-    return render_template('index.html'), 404
+    return render_template('index.html')
 
 
 @app.route('/get/photos', methods=['POST'])
