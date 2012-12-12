@@ -1,0 +1,39 @@
+{% extends "bootstrap_responsive.html" %}
+
+{% block body_content %}
+    <div class="container">
+      <div class="hero-unit">
+        <h1>Remindergram</h1>
+        <ol>
+          <li>Remind yourself to send Postagrams</li>
+          <li>???</li>
+          <li>Profit</li>
+        </ol>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span12">
+          <form class="form-horizontal remindergram" action="/get/photos" method="POST">
+            <input class="input-xxlarge" type="text" id="service" name="service" tabindex="1" placeholder="Service">
+            <input class="input-xxlarge" type="text" id="identifier" name="identifier" tabindex="1" placeholder="">
+            <input type="submit" class="hidden">
+          </form>
+        </div>
+
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block style %}
+  {{super()}}
+    <link href="{{url_for('static', filename='remindergram.css')}}" rel="stylesheet">
+{%- endblock %}
+
+{% block bootstrap_js_bottom %}
+  {{super()}}
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+    <script src="{{url_for('static', filename='remindergram.js')}}"></script>
+{%- endblock %}

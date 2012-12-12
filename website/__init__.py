@@ -1,0 +1,32 @@
+from flask import Flask, render_template, jsonify, request
+import json
+from flask.ext.bootstrap import Bootstrap
+from remindergram import source, recommendation
+
+app = Flask(__name__)
+Bootstrap(app)
+
+app.config['BOOTSTRAP_USE_MINIFIED'] = True
+app.config['BOOTSTRAP_USE_CDN'] = True
+app.config['BOOTSTRAP_FONTAWESOME'] = True
+
+
+@app.route('/')
+def index():
+    return render_template('index.html'), 404
+
+
+@app.route('/get/photos', methods=['POST'])
+def get_photos():
+    service = request.form['service']
+    identifier = request.form['identifier']
+    if not hasattr(source, service):
+        return jsonify({'error': 'Invalid service'})
+
+    s = getattr(source, service)(identifier)
+    if not s.photos:
+        return jsonify({'error': 'No photos'})
+
+    recs = recommendation.Recommendation(s.photos, {'days': 20, 'size': 100})
+    photos = [{'title': rec.data.get('title'), 'url': rec.url} for rec in recs.get()]
+    return json.dumps(photos)
