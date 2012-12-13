@@ -46,8 +46,7 @@ class Photo_Validation(object):
         self.valid = self.validate()
 
     def validate(self):
-        results = [self.run(test, param) for test, param in self.tests.items()]
-        return False not in results
+        return False not in [self.run(test, param) for test, param in self.tests.items()]
 
     def run(self, test, param):
         callback = 'test_%s' % test
