@@ -7,10 +7,12 @@ import time
 
 class Recommendation(object):
     def __init__(self, photos, args={}):
-        # Dedupe
-        self.photos = set(photos)
+        self.photos = self.dedupe_and_sort(photos)
         self.parse_args(args)
         self.recommend()
+
+    def dedupe_and_sort(self, photos):
+        return sorted(set(photos), key=lambda photo: photo.data.get('timestamp'), reverse=True)
 
     def parse_args(self, args):
         self.photo_tests = {
