@@ -11,9 +11,15 @@ import time
 
 class RSS(object):
     def __init__(self, url):
-        self.url = url
+        self.url = self.parse_url(url)
         self.parse_feed()
         self.parse_entries()
+
+    def parse_url(self, string):
+        if re.search(r'^https?:\/\/', string):
+            return string
+        else:
+            return 'http://%s' % string
 
     def parse_feed(self):
         self.feed = feedparser.parse(self.url)
