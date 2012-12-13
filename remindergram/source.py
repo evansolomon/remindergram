@@ -7,6 +7,7 @@ import re
 import photo
 import datetime
 import time
+import os
 
 
 class RSS(object):
