@@ -3,7 +3,7 @@ import json
 from remindergram import source, recommendation
 
 
-def get_photos():
+def recommendation_photos():
     query = _Query(request)
     if not hasattr(source, query.service):
         return jsonify({'error': 'Invalid service'})

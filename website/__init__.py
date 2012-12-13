@@ -15,6 +15,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/get/photos', methods=['POST'])
-def get_photos():
-    return api.get_photos()
+@app.route('/recommendation/photos', methods=['POST'])
+def recommendation_photos():
+    return api.recommendation_photos()
