@@ -27,7 +27,7 @@ def get_photos():
     if not s.photos:
         return jsonify({'error': 'No photos'})
 
-    recs = recommendation.Recommendation(s.photos, {'days': 20, 'size': 100})
+    recs = recommendation.Recommendation(s.photos, {'days': 20, 'size': 500})
     photos = [rec.url for rec in recs.get()]
     if not len(photos):
         return jsonify({'error': 'No photos'})
