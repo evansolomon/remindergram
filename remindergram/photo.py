@@ -53,3 +53,10 @@ class Photo(object):
         self.url = url
         image = urllib2.urlopen(url).read()
         return StringIO(image)
+
+    # A couple of deduplication methods
+    def __eq__(self, compare):
+        return self.url == compare.url
+
+    def __hash___(self):
+        return hash(('url', self.url))

@@ -7,18 +7,10 @@ import time
 
 class Recommendation(object):
     def __init__(self, photos, args={}):
-        self.photos = self.dedupe_photos(photos)
+        # Dedupe
+        self.photos = set(photos)
         self.parse_args(args)
         self.recommend()
-
-    def dedupe_photos(self, photos):
-        results = []
-        for photo in photos:
-            _link = photo.data.get('link')
-            if _link not in [result.data.get('link') for result in results]:
-                results.append(photo)
-
-        return results
 
     def parse_args(self, args):
         self.photo_tests = {
