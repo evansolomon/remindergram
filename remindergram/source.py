@@ -23,7 +23,7 @@ class RSS(object):
         self.photos = []
         rss_entries = [RSS_Entry(entry) for entry in self.get_entries()]
         for entry in rss_entries:
-            images = photo.find_in_html(entry.get_content())
+            images = self.find_photos(entry.get_content())
             photos = [photo.Photo(image, entry.data) for image in images]
             self.photos.extend(photos)
 
@@ -31,6 +31,9 @@ class RSS(object):
 
     def get_entries(self):
         return self.feed.entries if 'entries' in self.feed else {}
+
+    def find_photos(self, html):
+        return photo.find_in_html(html)
 
 
 class RSS_Entry(object):
@@ -85,3 +88,12 @@ class Instagram(RSS):
 
     def get_feed_url(self, user):
         return 'http://widget.stagram.com/rss/n/%s/' % user
+
+    def find_photos(self, html):
+        photos = super(Instagram, self).find_photos(html)
+        return map(self.get_full_size, photos)
+
+    def get_full_size(self, photo):
+        # Bigger images
+        photos = re.sub('(.+)_6(\.[^\.]+)$', r'\1_7\2', photo)
+        return photos
