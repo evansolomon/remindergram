@@ -63,7 +63,7 @@
       return renderResult(compiled);
     };
     renderResult = function(html) {
-      return $result.empty().append(html);
+      return $result.html(html);
     };
     return waitingPanda = function() {
       var compiled;

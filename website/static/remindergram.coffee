@@ -56,7 +56,7 @@ $ ->
 		renderResult compiled
 
 	renderResult = ( html ) ->
-		$result.empty().append html
+		$result.html html
 
 	waitingPanda = ->
 		compiled = _.template "<img src='<%= src %>'>",
