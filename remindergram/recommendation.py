@@ -19,6 +19,10 @@ class Recommendation(object):
             'days': args.get('days', 7),
             'size': args.get('size', None)
         }
+
+        self.query = {
+            'count': args.get('count', None)
+        }
         return self
 
     def recommend(self):
@@ -32,7 +36,7 @@ class Recommendation(object):
         return Photo_Validation(photo, self.photo_tests).valid
 
     def get(self):
-        return self.recommendations
+        return self.recommendations[:self.query.get('count')]
 
 
 class Photo_Validation(object):
