@@ -34,6 +34,7 @@ class Photo(object):
 
     def filter_attrs(self):
         self.data = {field: self.attrs.get(field) for field in self.fields}
+        return self
 
     def validate(self, minimum=False):
         if any(False == self.data.get(field, False) for field in self.fields):
@@ -45,6 +46,7 @@ class Photo(object):
     def parse_image(self):
         self.filter_attrs()
         self.get_size()
+        return self
 
     def get_size(self):
         bytes = self.get_bytes()
