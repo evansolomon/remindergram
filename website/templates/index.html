@@ -3,35 +3,45 @@
 {% block title %}Remindergram{%- endblock %}
 
 {% block body_content %}
-    <div class="container">
-      <div class="hero-unit">
+      <header class="title">
         <h1>Remindergram</h1>
-        <ol>
-          <li>Remind yourself to send Postagrams</li>
-          <li>???</li>
-          <li>Profit</li>
-        </ol>
-      </div>
+        <h2>Oh yeah! I need to send that Postagram</h2>
+      </header>
 
-      <!-- Example row of columns -->
+    <div class="container">
+
       <div class="row">
-        <div class="span12">
+        <div class="span4">
+
           <form class="form-horizontal remindergram" action="/recommendation/photos" method="POST">
-            <input class="input-xxlarge" type="text" id="service" name="service" tabindex="1" placeholder="Service">
-            <input class="input-xxlarge" type="text" id="identifier" name="identifier" tabindex="1" placeholder="">
+            <label for="service">Choose a service:</label>
+            <input type="radio" id="service" name="service" tabindex="1" value="WordPress">WordPress</input>
+            <input type="radio" id="service" name="service" tabindex="1" value="Instagram">Instagram</input>
+            <input type="radio" id="service" name="service" tabindex="1" value="RSS">RSS</input>
+
+            <label for="identifier">Enter URL</label>
+            <input type="text" id="identifier" name="identifier" tabindex="1" placeholder="">
             <input type="submit" class="hidden">
           </form>
         </div>
 
-        <div class="span12 result">
+        <div class="span8 result">
         </div>
-
+      </div>
     </div> <!-- /container -->
+
+    <footer>
+      <p>Made by Red Pandas</p>
+    </footer>
+
+
 {% endblock %}
 
 {% block style %}
   {{super()}}
     <link href="{{url_for('static', filename='remindergram.css')}}" rel="stylesheet">
+    <script type="text/javascript" src="//use.typekit.net/its0yhc.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 {%- endblock %}
 
 {% block bootstrap_js_bottom %}
