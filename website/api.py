@@ -15,7 +15,7 @@ def recommendation_photos():
     recs = recommendation.Recommendation(s.photos, {'days': query.days, 'size': query.size})
     photos = [rec.url for rec in recs.get()]
     if not photos:
-        return jsonify({'error': 'No photos'})
+        return jsonify({'error': 'No recommendeded photos'})
 
     return Response(json.dumps(photos), mimetype='application/json')
 
