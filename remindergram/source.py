@@ -17,9 +17,7 @@ class RSS(object):
         self.parse_entries()
 
     def parse_url(self, string):
-        if os.path.isfile(string):
-            return string
-        elif re.search(r'^https?:\/\/', string):
+        if os.path.isfile(string) or re.search(r'^https?:\/\/', string):
             return string
         else:
             return 'http://%s' % string
