@@ -25,7 +25,7 @@ $ ->
 		if active
 			active.text()
 		else
-			false
+			''
 
 	doService = ( name )->
 		setIdentifer services[name]
