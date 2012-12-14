@@ -82,7 +82,9 @@ class WordPress(RSS):
         super(WordPress, self).__init__(feed_url)
 
     def get_feed_url(self, url):
-        if re.search('feed/?$', url):
+        if not '.' in url:
+            return 'http://%s.wordpress.com/rss' % url
+        elif re.search('feed/?$', url):
             return url
         else:
             return '%s/feed' % url.rstrip('/')
