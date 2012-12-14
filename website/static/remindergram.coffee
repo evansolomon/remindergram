@@ -21,7 +21,7 @@ $ ->
 		doService $( event.target ).text()
 
 	getActiveService = ->
-		active = $form.find( '.btn.active' )
+		active = $form.find '.btn.active'
 		if active
 			active.text()
 		else
