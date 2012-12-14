@@ -1,7 +1,6 @@
 $ ->
 	# Dom elements
 	$form       = $ 'form.remindergram'
-	$service    = $ '#service'
 	$identifier = $ '#identifier'
 	$result     = $ '.result'
 
@@ -14,13 +13,17 @@ $ ->
 	# AJAX requests
 	activeRequest = false
 
-	# Listen on service keyup
-	$service.on 'keyup', ( event )->
-		$val = $( event.target ).val()
-		if services.hasOwnProperty $val
-			doService $val
-		else
-			destroyService()
+	# Listen on service buttons
+	$form.find( '.btn' ).on 'click', ( event ) ->
+		$form.find( '.btn' ).removeClass 'active'
+		$( this ).addClass 'active'
+		doService $( event.target ).text()
+
+	getActiveService = ->
+		active = $form.find( '.btn.active' )
+		if active
+			active.text()
+		else false
 
 	doService = ( name )->
 		setIdentifer services[name]
@@ -54,13 +57,17 @@ $ ->
 		, 800
 
 	parseFormData = ( $form ) ->
-		return _.reduce $form.serializeArray(), ( data, pair ) ->
+		inputs = _.reduce $form.serializeArray(), ( data, pair ) ->
 			data[ pair.name ] = pair.value
 			return data
 		, {}
 
+		_.extend inputs, { 'service': getActiveService() }
+
 	renderSucces = (response) ->
-		compiled = _.template '<ul><% _.each(photos, function(photo) { %> <li><img src="<%= photo %>"></li> <% }); %></ul>',
+		compiled = _.template '<ul><% _.each(photos, function(photo) { %>
+				<li><img src="<%= photo %>"></li> <% });
+			%></ul>',
 			photos: response
 
 		renderResult compiled

@@ -2,9 +2,8 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $result, $service, activeRequest, destroyService, doService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
+    var $form, $identifier, $result, activeRequest, destroyService, doService, getActiveService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
     $form = $('form.remindergram');
-    $service = $('#service');
     $identifier = $('#identifier');
     $result = $('.result');
     services = {
@@ -13,15 +12,20 @@
       'RSS': 'Feed address'
     };
     activeRequest = false;
-    $service.on('keyup', function(event) {
-      var $val;
-      $val = $(event.target).val();
-      if (services.hasOwnProperty($val)) {
-        return doService($val);
-      } else {
-        return destroyService();
-      }
+    $form.find('.btn').on('click', function(event) {
+      $form.find('.btn').removeClass('active');
+      $(this).addClass('active');
+      return doService($(event.target).text());
     });
+    getActiveService = function() {
+      var active;
+      active = $form.find('.btn.active');
+      if (active) {
+        return active.text();
+      } else {
+        return false;
+      }
+    };
     doService = function(name) {
       return setIdentifer(services[name]);
     };
@@ -55,14 +59,20 @@
       }, 800);
     });
     parseFormData = function($form) {
-      return _.reduce($form.serializeArray(), function(data, pair) {
+      var inputs;
+      inputs = _.reduce($form.serializeArray(), function(data, pair) {
         data[pair.name] = pair.value;
         return data;
       }, {});
+      return _.extend(inputs, {
+        'service': getActiveService()
+      });
     };
     renderSucces = function(response) {
       var compiled;
-      compiled = _.template('<ul><% _.each(photos, function(photo) { %> <li><img src="<%= photo %>"></li> <% }); %></ul>', {
+      compiled = _.template('<ul><% _.each(photos, function(photo) { %>\
+				<li><img src="<%= photo %>"></li> <% });\
+			%></ul>', {
         photos: response
       });
       return renderResult(compiled);
