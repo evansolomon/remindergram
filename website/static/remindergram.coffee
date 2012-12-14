@@ -11,6 +11,9 @@ $ ->
 		'WordPress' : 'Blog address'
 		'RSS'       : 'Feed address'
 
+	# AJAX requests
+	activeRequest = false
+
 	# Listen on service keyup
 	$service.on 'keyup', ( event )->
 		$val = $( event.target ).val()
@@ -32,9 +35,11 @@ $ ->
 	$form.on 'submit', ( event ) ->
 		event.preventDefault()
 
+		@activeRequest.abort() if @activeRequest
+
 		data = parseFormData $form
 		timer = waitingPanda()
-		$.post $form.attr( 'action' ), data, ( response ) ->
+		@activeRequest = $.post $form.attr( 'action' ), data, ( response ) ->
 			clearTimeout timer
 			if response.error
 				renderError response

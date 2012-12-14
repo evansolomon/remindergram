@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $result, $service, destroyService, doService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
+    var $form, $identifier, $result, $service, activeRequest, destroyService, doService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
     $form = $('form.remindergram');
     $service = $('#service');
     $identifier = $('#identifier');
@@ -12,6 +12,7 @@
       'WordPress': 'Blog address',
       'RSS': 'Feed address'
     };
+    activeRequest = false;
     $service.on('keyup', function(event) {
       var $val;
       $val = $(event.target).val();
@@ -33,9 +34,12 @@
     $form.on('submit', function(event) {
       var data, timer;
       event.preventDefault();
+      if (this.activeRequest) {
+        this.activeRequest.abort();
+      }
       data = parseFormData($form);
       timer = waitingPanda();
-      return $.post($form.attr('action'), data, function(response) {
+      return this.activeRequest = $.post($form.attr('action'), data, function(response) {
         clearTimeout(timer);
         if (response.error) {
           return renderError(response);
