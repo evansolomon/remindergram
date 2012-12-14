@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $result, activeRequest, destroyService, doService, getActiveService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
+    var $form, $identifier, $result, activeRequest, doService, getActiveService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
     $form = $('form.remindergram');
     $identifier = $('#identifier');
     $result = $('.result');
@@ -30,10 +30,8 @@
     doService = function(name) {
       return setIdentifer(services[name]);
     };
-    destroyService = function() {
-      return setIdentifer('');
-    };
     setIdentifer = function(placeholder) {
+      $('label[for="identifier"]').text("Enter " + services[getActiveService()]);
       return $identifier.attr('placeholder', placeholder);
     };
     $form.on('submit', function(event) {
