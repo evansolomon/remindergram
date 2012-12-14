@@ -20,6 +20,7 @@ $ ->
 		$form.find( '.btn' ).removeClass 'active'
 		$( this ).addClass 'active'
 		doService $( event.target ).text()
+		$identifier.focus()
 
 	getActiveService = ->
 		active = $form.find '.btn.active'

@@ -17,7 +17,8 @@
       event.preventDefault();
       $form.find('.btn').removeClass('active');
       $(this).addClass('active');
-      return doService($(event.target).text());
+      doService($(event.target).text());
+      return $identifier.focus();
     });
     getActiveService = function() {
       var active;
