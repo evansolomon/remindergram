@@ -9,7 +9,7 @@ from urlparse import urlparse
 import urllib2
 
 # Seemingly consistent ratio
-BYTES_PER_PIXEL = 0.3
+BYTES_PER_PIXEL = 0.25
 
 
 def find_in_html(html):
