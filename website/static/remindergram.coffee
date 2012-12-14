@@ -24,7 +24,8 @@ $ ->
 		active = $form.find( '.btn.active' )
 		if active
 			active.text()
-		else false
+		else
+			false
 
 	doService = ( name )->
 		setIdentifer services[name]
