@@ -15,6 +15,7 @@ $ ->
 
 	# Listen on service buttons
 	$form.find( '.btn' ).on 'click', ( event ) ->
+		event.preventDefault()
 		$form.find( '.btn' ).removeClass 'active'
 		$( this ).addClass 'active'
 		doService $( event.target ).text()
