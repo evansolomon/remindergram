@@ -48,9 +48,11 @@ $ ->
 		@lastQuery = data
 
 		@activeRequest.abort() if @activeRequest
+		@activeRequest = sendRequest data
 
+	sendRequest = ( data ) ->
 		timer = waitingPanda()
-		@activeRequest = $.post $form.attr( 'action' ), data, ( response ) ->
+		$.post $form.attr( 'action' ), data, ( response ) ->
 			clearTimeout timer
 			if response.error
 				renderError response
