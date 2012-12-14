@@ -66,7 +66,7 @@ $ ->
 
 		_.extend inputs, { 'service': getActiveService() }
 
-	renderSucces = (response) ->
+	renderSucces = ( response ) ->
 		compiled = _.template '<ul><% _.each(photos, function(photo) { %>
 				<li><img src="<%= photo %>"></li> <% });
 			%></ul>',
