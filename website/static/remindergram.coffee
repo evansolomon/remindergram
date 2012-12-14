@@ -31,6 +31,7 @@ $ ->
 		setIdentifer services[name]
 
 	setIdentifer = ( placeholder ) ->
+		$('label[for="identifier"]').text "Enter #{services[getActiveService()]}"
 		$identifier.attr 'placeholder', placeholder
 
 	# Listen on form submit
