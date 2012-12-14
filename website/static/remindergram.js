@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $result, activeRequest, doService, getActiveService, parseFormData, renderError, renderResult, renderSucces, services, setIdentifer, waitingPanda;
+    var $form, $identifier, $result, activeRequest, doService, getActiveService, lastQuery, parseFormData, renderError, renderResult, renderSucces, sendRequest, services, setIdentifer, waitingPanda;
     $form = $('form.remindergram');
     $identifier = $('#identifier');
     $result = $('.result');
@@ -13,6 +13,7 @@
       'RSS': 'Feed address'
     };
     activeRequest = false;
+    lastQuery = {};
     $form.find('.btn').on('click', function(event) {
       event.preventDefault();
       $form.find('.btn').removeClass('active');
@@ -37,31 +38,34 @@
       return $identifier.attr('placeholder', placeholder);
     };
     $form.on('submit', function(event) {
-      var data, timer;
+      var data;
       event.preventDefault();
       data = parseFormData($form);
       if (_.contains(_.values(data), '')) {
         return;
       }
+      if (_.isEqual(data, this.lastQuery)) {
+        return;
+      }
+      this.lastQuery = data;
       if (this.activeRequest) {
         this.activeRequest.abort();
       }
-      timer = waitingPanda();
-      return this.activeRequest = $.post($form.attr('action'), data, function(response) {
-        clearTimeout(timer);
+      return this.activeRequest = sendRequest(data);
+    });
+    sendRequest = function(data) {
+      waitingPanda();
+      return $.post($form.attr('action'), data, function(response) {
         if (response.error) {
           return renderError(response);
         } else {
           return renderSucces(response);
         }
       });
-    });
-    $form.keyup(function() {
-      clearTimeout(this.keyup_timer);
-      return this.keyup_timer = setTimeout(function() {
-        return $form.submit();
-      }, 800);
-    });
+    };
+    $form.keyup(_.debounce(function() {
+      return $form.submit();
+    }, 800));
     parseFormData = function($form) {
       var inputs;
       inputs = _.reduce($form.serializeArray(), function(data, pair) {
@@ -97,9 +101,7 @@
       compiled = _.template('<img src="<%= src %>">', {
         src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
       });
-      return setTimeout(function() {
-        return renderResult(compiled);
-      }, 500);
+      return _.debounce(renderResult(compiled), 500);
     };
   });
 

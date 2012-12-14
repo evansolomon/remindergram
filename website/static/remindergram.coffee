@@ -51,9 +51,8 @@ $ ->
 		@activeRequest = sendRequest data
 
 	sendRequest = ( data ) ->
-		timer = waitingPanda()
+		waitingPanda()
 		$.post $form.attr( 'action' ), data, ( response ) ->
-			clearTimeout timer
 			if response.error
 				renderError response
 			else
