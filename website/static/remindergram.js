@@ -13,6 +13,7 @@
     };
     activeRequest = false;
     $form.find('.btn').on('click', function(event) {
+      event.preventDefault();
       $form.find('.btn').removeClass('active');
       $(this).addClass('active');
       return doService($(event.target).text());
