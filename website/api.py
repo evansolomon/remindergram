@@ -28,6 +28,7 @@ class _Query(object):
     def set_defaults(self):
         self.days = 20
         self.size = 500
+        return self
 
     def parse_request(self, request):
         for key, val in request.form.items():
