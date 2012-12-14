@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var $form, $identifier, $result, activeRequest, doService, getActiveService, lastQuery, parseFormData, renderError, renderResult, renderSucces, sendRequest, services, setIdentifer, waitingPanda;
+    var $form, $identifier, $result, activeRequest, cacheResponse, doService, getActiveService, hashRequest, lastQuery, parseFormData, renderError, renderResponse, renderResult, renderSucces, requestCache, sendRequest, services, setIdentifer, waitingPanda;
     $form = $('form.remindergram');
     $identifier = $('#identifier');
     $result = $('.result');
@@ -14,6 +14,7 @@
     };
     activeRequest = false;
     lastQuery = {};
+    requestCache = {};
     $form.find('.btn').on('click', function(event) {
       event.preventDefault();
       $form.find('.btn').removeClass('active');
@@ -38,7 +39,7 @@
       return $identifier.attr('placeholder', placeholder);
     };
     $form.on('submit', function(event) {
-      var data;
+      var data, hash;
       event.preventDefault();
       data = parseFormData($form);
       if (_.contains(_.values(data), '')) {
@@ -48,20 +49,36 @@
         return;
       }
       this.lastQuery = data;
+      hash = hashRequest(data);
+      if (_.has(requestCache, hash)) {
+        return renderResponse(requestCache[hash]);
+      }
       if (this.activeRequest) {
         this.activeRequest.abort();
       }
       return this.activeRequest = sendRequest(data);
     });
+    hashRequest = function(data) {
+      return _.pairs(data).toString();
+    };
     sendRequest = function(data) {
       waitingPanda();
       return $.post($form.attr('action'), data, function(response) {
-        if (response.error) {
-          return renderError(response);
-        } else {
-          return renderSucces(response);
-        }
+        cacheResponse(data, response);
+        return renderResponse(response);
       });
+    };
+    renderResponse = function(response) {
+      if (response.error) {
+        return renderError(response);
+      } else {
+        return renderSucces(response);
+      }
+    };
+    cacheResponse = function(data, response) {
+      var hash;
+      hash = hashRequest(data);
+      return requestCache[hash] = response;
     };
     $form.keyup(_.debounce(function() {
       return $form.submit();

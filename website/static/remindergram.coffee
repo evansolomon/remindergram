@@ -14,6 +14,7 @@ $ ->
 	# AJAX requests
 	activeRequest = false
 	lastQuery     = {}
+	requestCache  = {}
 
 	# Listen on service buttons
 	$form.find( '.btn' ).on 'click', ( event ) ->
@@ -45,18 +46,34 @@ $ ->
 		return if _.contains _.values( data ), ''
 
 		return if _.isEqual data, @lastQuery
+
 		@lastQuery = data
+
+		hash = hashRequest data
+		if _.has requestCache, hash
+			return renderResponse requestCache[hash]
 
 		@activeRequest.abort() if @activeRequest
 		@activeRequest = sendRequest data
 
+	hashRequest = ( data ) ->
+		_.pairs( data ).toString()
+
 	sendRequest = ( data ) ->
 		waitingPanda()
 		$.post $form.attr( 'action' ), data, ( response ) ->
-			if response.error
-				renderError response
-			else
-				renderSucces response
+			cacheResponse data, response
+			renderResponse response
+
+	renderResponse = ( response ) ->
+		if response.error
+			renderError response
+		else
+			renderSucces response
+
+	cacheResponse = ( data, response ) ->
+		hash = hashRequest data
+		requestCache[hash] = response
 
 	# Auto-submit form when the user stops typing
 	$form.keyup _.debounce ->
