@@ -54,11 +54,9 @@ $ ->
 				renderSucces response
 
 	# Auto-submit form when the user stops typing
-	$form.keyup ->
-		clearTimeout @keyup_timer
-		@keyup_timer = setTimeout ->
-			$form.submit()
-		, 800
+	$form.keyup _.debounce ->
+		$form.submit()
+	, 800
 
 	parseFormData = ( $form ) ->
 		inputs = _.reduce $form.serializeArray(), ( data, pair ) ->
@@ -90,6 +88,4 @@ $ ->
 		compiled = _.template '<img src="<%= src %>">',
 			src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
 
-		setTimeout ->
-			renderResult compiled,
-		, 500
+		_.debounce renderResult( compiled ), 500
