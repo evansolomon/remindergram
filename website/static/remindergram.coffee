@@ -13,6 +13,7 @@ $ ->
 
 	# AJAX requests
 	activeRequest = false
+	lastQuery     = {}
 
 	# Listen on service buttons
 	$form.find( '.btn' ).on 'click', ( event ) ->
@@ -42,6 +43,9 @@ $ ->
 
 		data = parseFormData $form
 		return if _.contains _.values( data ), ''
+
+		return if _.isEqual data, @lastQuery
+		@lastQuery = data
 
 		@activeRequest.abort() if @activeRequest
 
