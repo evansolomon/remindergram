@@ -41,6 +41,13 @@ $ ->
 			else
 				renderSucces response
 
+	# Auto-submit form when the user stops typing
+	$form.keyup ->
+		clearTimeout @keyup_timer
+		@keyup_timer = setTimeout ->
+			$form.submit()
+		, 800
+
 	parseFormData = ( $form ) ->
 		return _.reduce $form.serializeArray(), ( data, pair ) ->
 			data[ pair.name ] = pair.value

@@ -44,6 +44,12 @@
         }
       });
     });
+    $form.keyup(function() {
+      clearTimeout(this.keyup_timer);
+      return this.keyup_timer = setTimeout(function() {
+        return $form.submit();
+      }, 800);
+    });
     parseFormData = function($form) {
       return _.reduce($form.serializeArray(), function(data, pair) {
         data[pair.name] = pair.value;
