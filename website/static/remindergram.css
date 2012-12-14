@@ -68,17 +68,6 @@ form .btn {
 
 }
 
-/*form .btn:hover {
-	background-position: 10px 12px;
-}
-
-
-form .wordpress {
-	background-image: url(images/wordpress.png);
-}
-*/
-
-
 input[type=text] {
 	font-size: 20px;
 	padding: 10px;
@@ -99,7 +88,7 @@ input[type=radio]:first-child {
 }
 
 .result li {
-	background: #222;
+	background: #222 url(images/postagram-template.png) 14px 14px no-repeat;
 	width: 190px;
 	float: left;
 	list-style: none;
@@ -107,10 +96,19 @@ input[type=radio]:first-child {
 	margin: 16px;
 	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
 	border-radius: 2px;
+	text-align: center;
 }
 
 .result li img {
+	width: auto;
+	min-width: 150%;
+	margin: auto -10%;
+}
+
+.result li .crop {
 	width: 105px;
+	height: 105px;
+	overflow: hidden;
 	float: right;
 	border: 1px rgba(255,255,255,0.2) solid;
 }

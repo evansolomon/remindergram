@@ -92,7 +92,7 @@ $ ->
 		compiled = _.template '
 			<ul>
 			<% _.each(photos, function(photo) { %>
-				<li><img src="<%= photo %>"></li> <%
+				<li><div class="crop"><img src="<%= photo %>"></div></li> <%
 			}); %>
 			</ul>',
 			photos: response
