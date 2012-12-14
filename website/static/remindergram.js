@@ -62,14 +62,14 @@
     };
     renderSucces = function(response) {
       var compiled;
-      compiled = _.template("<ul><% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %></ul>", {
+      compiled = _.template('<ul><% _.each(photos, function(photo) { %> <li><img src="<%= photo %>"></li> <% }); %></ul>', {
         photos: response
       });
       return renderResult(compiled);
     };
     renderError = function(response) {
       var compiled;
-      compiled = _.template("Oops, there was an error: <%= error %>", response);
+      compiled = _.template('Oops, there was an error: <%= error %>', response);
       return renderResult(compiled);
     };
     renderResult = function(html) {
@@ -77,7 +77,7 @@
     };
     return waitingPanda = function() {
       var compiled;
-      compiled = _.template("<img src='<%= src %>'>", {
+      compiled = _.template('<img src="<%= src %>">', {
         src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
       });
       return setTimeout(function() {

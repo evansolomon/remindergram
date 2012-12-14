@@ -60,20 +60,20 @@ $ ->
 		, {}
 
 	renderSucces = (response) ->
-		compiled = _.template "<ul><% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %></ul>",
+		compiled = _.template '<ul><% _.each(photos, function(photo) { %> <li><img src="<%= photo %>"></li> <% }); %></ul>',
 			photos: response
 
 		renderResult compiled
 
 	renderError = ( response ) ->
-		compiled = _.template "Oops, there was an error: <%= error %>", response
+		compiled = _.template 'Oops, there was an error: <%= error %>', response
 		renderResult compiled
 
 	renderResult = ( html ) ->
 		$result.html html
 
 	waitingPanda = ->
-		compiled = _.template "<img src='<%= src %>'>",
+		compiled = _.template '<img src="<%= src %>">',
 			src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
 
 		setTimeout ->
