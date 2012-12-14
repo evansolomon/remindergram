@@ -8,6 +8,9 @@ from cStringIO import StringIO
 from urlparse import urlparse
 import urllib2
 
+# Seemingly consistent ratio
+BYTES_PER_PIXEL = 0.3
+
 
 def find_in_html(html):
     images = BeautifulSoup(html).findAll('img')
@@ -15,28 +18,22 @@ def find_in_html(html):
 
 
 class Photo(object):
-    def __init__(self, file, attrs):
-        self.url = None
+    def __init__(self, url, attrs):
+        self.url = url
+        self.attrs = attrs
         self.set_defaults()
-        self.fields = ('title', 'author', 'link', 'timestamp')
-        self.file = self.get_file(file)
-        self.data = self.filter_attrs(attrs)
-        self.size = self.get_size()
-
-    def get_file(self, file):
-        if urlparse(file).netloc:
-            file = self.get_from_url(file)
-
-        return file
+        self.parse_image()
 
     def set_defaults(self):
         self.defaults = {
             'minimum_size': 500
         }
+        self.fields = ('title', 'author', 'link', 'timestamp')
+
         return self
 
-    def filter_attrs(self, attrs):
-        return {field: attrs.get(field) for field in self.fields}
+    def filter_attrs(self):
+        self.data = {field: self.attrs.get(field) for field in self.fields}
 
     def validate(self, minimum=False):
         if any(False == self.data.get(field, False) for field in self.fields):
@@ -45,14 +42,31 @@ class Photo(object):
         minimum = minimum or self.defaults.get('minimum_size')
         return all(dimension >= minimum for dimension in self.size)
 
-    def get_size(self):
-        image = Image.open(self.file)
-        return image.size if hasattr(image, 'size') else (0, 0)
+    def parse_image(self):
+        self.filter_attrs()
+        self.get_size()
 
-    def get_from_url(self, url):
-        self.url = url
-        image = urllib2.urlopen(url).read()
-        return StringIO(image)
+    def get_size(self):
+        bytes = self.get_bytes()
+        if bytes:
+            pixels = int(bytes) / BYTES_PER_PIXEL
+            side = int(pixels ** 0.5)
+            dimensions = (side, side)
+        else:
+            image_file = urllib2.urlopen(self.url).read()
+            io = StringIO(image_file)
+            image = Image.open(io)
+            dimensions = image.size if hasattr(image, 'size') else (0, 0)
+
+        self.size = dimensions
+        return self
+
+    def get_bytes(self):
+        request = urllib2.Request(self.url)
+        request.get_method = lambda: 'HEAD'
+        response = urllib2.urlopen(request)
+        bytes = response.info().getheader('Content-Length') or 0
+        return int(bytes)
 
     # A couple of deduplication methods
     def __eq__(self, compare):
