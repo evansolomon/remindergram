@@ -39,10 +39,13 @@
     $form.on('submit', function(event) {
       var data, timer;
       event.preventDefault();
+      data = parseFormData($form);
+      if (_.contains(_.values(data), '')) {
+        return;
+      }
       if (this.activeRequest) {
         this.activeRequest.abort();
       }
-      data = parseFormData($form);
       timer = waitingPanda();
       return this.activeRequest = $.post($form.attr('action'), data, function(response) {
         clearTimeout(timer);

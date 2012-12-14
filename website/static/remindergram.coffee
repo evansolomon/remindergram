@@ -40,9 +40,11 @@ $ ->
 	$form.on 'submit', ( event ) ->
 		event.preventDefault()
 
+		data = parseFormData $form
+		return if _.contains _.values( data ), ''
+
 		@activeRequest.abort() if @activeRequest
 
-		data = parseFormData $form
 		timer = waitingPanda()
 		@activeRequest = $.post $form.attr( 'action' ), data, ( response ) ->
 			clearTimeout timer
