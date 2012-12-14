@@ -30,9 +30,6 @@ $ ->
 	doService = ( name )->
 		setIdentifer services[name]
 
-	destroyService = ->
-		setIdentifer ''
-
 	setIdentifer = ( placeholder ) ->
 		$identifier.attr 'placeholder', placeholder
 
