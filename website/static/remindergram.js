@@ -31,7 +31,7 @@
       return setIdentifer(services[name]);
     };
     setIdentifer = function(placeholder) {
-      $('label[for="identifier"]').text("Enter " + services[getActiveService()]);
+      $('label[for="identifier"]').text("Enter " + placeholder);
       return $identifier.attr('placeholder', placeholder);
     };
     $form.on('submit', function(event) {
