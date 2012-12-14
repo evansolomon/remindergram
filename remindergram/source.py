@@ -94,7 +94,10 @@ class Tumblr(RSS):
         super(Tumblr, self).__init__(feed_url)
 
     def get_feed_url(self, url):
-        if re.search('rss/?$', url):
+        # Ghetto test for URL's
+        if not '.' in url:
+            return 'http://%s.tumblr.com/rss' % url
+        elif re.search('rss/?$', url):
             return url
         else:
             return '%s/rss' % url.rstrip('/')
