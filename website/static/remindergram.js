@@ -62,7 +62,7 @@
     };
     renderSucces = function(response) {
       var compiled;
-      compiled = _.template("<% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %>", {
+      compiled = _.template("<ul><% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %></ul>", {
         photos: response
       });
       return renderResult(compiled);

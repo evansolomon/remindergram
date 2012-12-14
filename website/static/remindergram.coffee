@@ -60,7 +60,9 @@ $ ->
 		, {}
 
 	renderSucces = (response) ->
-		compiled = _.template "<% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %>", {photos: response}
+		compiled = _.template "<ul><% _.each(photos, function(photo) { %> <li><img src='<%= photo %>'</li> <% }); %></ul>",
+			photos: response
+
 		renderResult compiled
 
 	renderError = ( response ) ->
