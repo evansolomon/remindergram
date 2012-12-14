@@ -73,7 +73,7 @@ class RSS_Entry(object):
         return int(time.mktime(struct))
 
     def trim_date(self, date):
-        return re.sub(' \+[0-9]{4}$', '', date)
+        return re.sub(' (\+|-)[0-9]{4}$', '', date)
 
 
 class WordPress(RSS):
@@ -86,6 +86,18 @@ class WordPress(RSS):
             return url
         else:
             return '%s/feed' % url.rstrip('/')
+
+
+class Tumblr(RSS):
+    def __init__(self, url):
+        feed_url = self.get_feed_url(url)
+        super(Tumblr, self).__init__(feed_url)
+
+    def get_feed_url(self, url):
+        if re.search('rss/?$', url):
+            return url
+        else:
+            return '%s/rss' % url.rstrip('/')
 
 
 class Instagram(RSS):

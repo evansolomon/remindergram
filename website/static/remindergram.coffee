@@ -8,6 +8,7 @@ $ ->
 	services =
 		'Instagram' : 'Username'
 		'WordPress' : 'Blog address'
+		'Tumblr'    : 'Blog address'
 		'RSS'       : 'Feed address'
 
 	# AJAX requests
