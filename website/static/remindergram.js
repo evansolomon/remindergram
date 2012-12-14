@@ -24,7 +24,7 @@
       if (active) {
         return active.text();
       } else {
-        return false;
+        return '';
       }
     };
     doService = function(name) {
