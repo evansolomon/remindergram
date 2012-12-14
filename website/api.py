@@ -38,4 +38,4 @@ class _Query(object):
 
     # Fallback, always be able to request a query attribute without errors
     def __getattr__(self, attr):
-        return None
+        return ''
