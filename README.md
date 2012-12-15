@@ -13,3 +13,7 @@ python setup.py install
 # Start the app
 python run.py
 ```
+
+### About
+
+Remindergram, aka RedPandagram is a [Sincerely](http://sincerely.com) hack day project from [evansolomon](http://github.com/evansolomon) and [chexee](http://github.com/chexee).
