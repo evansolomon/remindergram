@@ -22,14 +22,25 @@ body {
 
 .title h1,
 .title h2 {
-	max-width: 1170px;
+	max-width: 1230px;
+	padding: 0 20px;
 	margin: auto;
 }
 
 .title h2 {
 	margin: -33px auto 0 auto;
+	font-weight: 200;
 }
 
+@media all and (max-width: 600px) {
+
+	.title h2 {
+		margin: 20px auto;
+		display: block;
+		text-align: left;
+	}
+
+}
 
 /* Typography
 ===================================== */
@@ -65,7 +76,7 @@ label {
 form .btn {
 	font-size: 14px;
 	padding: 7px 12px;
-
+	margin: 3px 0;
 }
 
 input[type=text] {
@@ -81,7 +92,23 @@ input[type=radio]:first-child {
 	margin-left: 0;
 }
 
+#identifier {
+	width: 100%;
+}
+
 /* Image Results */
+
+.waiting {
+	text-align: center;
+	font-size: 24px;
+}
+
+.waiting-panda {
+	display: block;
+	margin: auto auto 40px auto;
+	clear: both;
+
+}
 
 .result {
 	float: right;
@@ -89,7 +116,7 @@ input[type=radio]:first-child {
 
 .result li {
 	background: #222 url(images/postagram-template.png) 14px 14px no-repeat;
-	width: 190px;
+	width: 180px;
 	float: left;
 	list-style: none;
 	padding: 15px;
@@ -97,6 +124,16 @@ input[type=radio]:first-child {
 	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
 	border-radius: 2px;
 	text-align: center;
+}
+
+@media all and (max-width: 600px) {
+
+	.result li {
+		width: 70%;
+		margin: 20px 0;
+		float: left;
+	}
+
 }
 
 .result li img {
@@ -112,10 +149,3 @@ input[type=radio]:first-child {
 	float: right;
 	border: 1px rgba(255,255,255,0.2) solid;
 }
-
-/* Forms */
-/*.remindergram .input-xxlarge {
-	font-size: 40px;
-	height: 50px;
-	line-height: 50px;
-}*/

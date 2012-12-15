@@ -107,7 +107,7 @@ $ ->
 		$result.html html
 
 	waitingPanda = ->
-		compiled = _.template '<img src="<%= src %>">',
+		compiled = _.template '<p class="waiting"><img src="<%= src %>" class="waiting-panda">  Red pandas are fetching your images ...</p>',
 			src: 'http://25.media.tumblr.com/tumblr_ly2em98lub1r3m4cbo1_400.gif'
 
 		_.debounce renderResult( compiled ), 500
